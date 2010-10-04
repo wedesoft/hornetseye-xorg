@@ -61,7 +61,9 @@ void X11Display::eventLoop( int timeout, bool resetQuit )
 
       // Check for remaining time.
       usecs_remaining = (int)( ( timeout * 0.001 - t.elapsed() ) * 1E+6 );
-
+#ifndef NDEBUG
+      cerr << usecs_remaining << " microseconds remaining" << endl;
+#endif
       if ( usecs_remaining > 0 ) {
         // Initialise timeout-variable.
         struct timeval tval;
@@ -73,6 +75,7 @@ void X11Display::eventLoop( int timeout, bool resetQuit )
 	
         // Create file-descriptor set.
         fd_set fds;
+        FD_ZERO( &fds );
         FD_SET( fd, &fds );
 	
         // Perform limited wait on event-pipe.
@@ -138,6 +141,9 @@ void X11Display::processEvents(void) throw (Error)
   //while ( XCheckMaskEvent( m_display, 0xFFFF, &event ) == True ) {
   //  handleEvent( event );
   //};
+#ifndef NDEBUG
+  cerr << "Processing pending events" << endl;
+#endif
   while ( XCheckIfEvent( m_display, &event, alwaysTrue, NULL ) )
     handleEvent( event );
 }

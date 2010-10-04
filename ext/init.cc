@@ -34,6 +34,7 @@ extern "C" {
 
   void Init_hornetseye_xorg(void)
   {
+    // XInitThreads();
     rb_require( "hornetseye_frame" );
     VALUE rbHornetseye = rb_define_module( "Hornetseye" );
     X11Output::registerRubyClass( rbHornetseye );
