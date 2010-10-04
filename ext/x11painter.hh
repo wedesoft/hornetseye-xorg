@@ -22,36 +22,23 @@
 class X11Window;
 class X11Output;
 
-///
 class X11Painter {
 public:
-  ///
   X11Painter(void): m_imageSource(NULL), m_window(NULL) {}
-  ///
   virtual ~X11Painter(void) {}
-  ///
   virtual void paint( bool x11Event ) throw (Error) = 0;
-  ///
   X11Window *window(void) { return m_window; }
-  ///
   void registerWindow( X11Window *window ) { m_window = window; }
-  ///
   virtual void unregisterWindow(void) { m_window = NULL; }
-  ///
   void registerImageSource( X11Output *imageSource )
   { m_imageSource = imageSource; }
-  ///
   void unregisterImageSource(void) { m_imageSource = NULL; }
-  ///
   virtual XVisualInfo *visualInfo( X11DisplayPtr display ) throw (Error) = 0;
 protected:
-  ///
   X11Output *m_imageSource;
-  ///
   X11Window *m_window;
 };
 
-///
 typedef boost::shared_ptr< X11Painter > X11PainterPtr;
 
 #endif

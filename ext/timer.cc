@@ -34,7 +34,7 @@ double Timer::elapsed(void) const
 
   // Use timersub-define, which does overflow-handling.
   struct timeval difference;
-  timersub( &actualTime, &time, &difference );
+  timersub( &actualTime, &m_time, &difference );
   return difference.tv_sec + difference.tv_usec * 1.0E-6;
 }
 

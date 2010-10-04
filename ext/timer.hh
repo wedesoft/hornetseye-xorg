@@ -20,29 +20,18 @@
 #include <boost/shared_ptr.hpp>
 #include <sys/time.h>
 
-/// Class for measuring time.    
 class Timer
 {
 public:
-  /** Constructor starting timer.
-      The constructor will call \c reset() to. */
   Timer(void) { reset(); }
-  /** Restart timer.
-      Reset the time elapsed to zero again. */
   void reset(void) {
-    gettimeofday( &time, NULL );
+    gettimeofday( &m_time, NULL );
   }
-  /** Get elapsed time.
-      The time elapsed (in seconds) is returned.
-      @return Time elapsed in seconds since last call of \c timer or
-      \c reset(). */
   double elapsed(void) const;
 protected:
-  /// Time of construction of this object.
-  struct timeval time;
+  struct timeval m_time;
 };
   
-///
 typedef boost::shared_ptr< Timer > TimerPtr;
 
 #endif

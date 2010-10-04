@@ -19,10 +19,8 @@
 #include <complex>
 #include "rubyinc.hh"
 
-/// Check whether Ruby variable is of a certain class.
-void checkType( VALUE rbValue, VALUE rbClass );// throws (Error,rubyexc)?
+void checkType( VALUE rbValue, VALUE rbClass );
 
-/// Check whether a Ruby variable is a T_DATA variable and of a certain class.
 void checkStruct( VALUE rbValue, VALUE rbClass );
 
 #define dataGetStruct(obj,klass,type,sval) { \

@@ -23,30 +23,20 @@
 
 class X11Window;
 
-///
 class XImagePainter: public X11Painter
 {
 public:
-  ///
   XImagePainter(void) {}
-  ///
   virtual void paint( bool x11Event ) throw (Error);
-  ///
   virtual XVisualInfo *visualInfo( X11DisplayPtr display ) throw (Error);
-  ///
   static VALUE cRubyClass;
-  ///
   static VALUE registerRubyClass( VALUE module, VALUE cX11Output );
-  ///
   static VALUE wrapNew( VALUE rbClass );
 protected:
-  ///
   XVisualInfo m_visualInfo;
-  ///
   X11DisplayPtr m_display;
 };
 
-///
 typedef boost::shared_ptr< XImagePainter > XImagePainterPtr;
 
 #endif

@@ -24,53 +24,33 @@
 class X11Window;
 class XVideoOutput;
 
-///
 class XVideoImagePainter: public X11Painter
 {
 public:
-  ///
   XVideoImagePainter(void);
-  ///
   ~XVideoImagePainter(void);
-  ///
   virtual void paint( bool x11Event ) throw (Error);
-  ///
   virtual void unregisterWindow(void);
-  ///
   virtual XVisualInfo *visualInfo( X11DisplayPtr display ) throw (Error);
-  ///
   static VALUE cRubyClass;
-  ///
   static VALUE registerRubyClass( VALUE module, VALUE cX11Output );
-  ///
   static VALUE wrapNew( VALUE rbClass );
 protected:
-  ///
   Atom findAtom( const char *name ) throw (Error);
-  ///
   int selectFormat( const int preferredUID ) throw (Error);
-  ///
   FramePtr alignYV12( FramePtr frame );
-  ///
   static int typecodeToUID( std::string typecode );
-  ///
   static std::string uidToTypecode( int uid );
-  ///
   XVisualInfo m_visualInfo;
-  ///
   XvPortID m_port;
-  ///
   bool m_requireColourKey;
-  ///
   int m_colourKey;
-  ///
   X11DisplayPtr m_display;
-  ///
   XvImage *m_xvImage;
-  ///
   static std::set< XvPortID > grabbedPorts;
 };
 
 typedef boost::shared_ptr< XVideoImagePainter > XVideoImagePainterPtr;
 
 #endif
+

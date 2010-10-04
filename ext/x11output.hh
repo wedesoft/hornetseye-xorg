@@ -19,42 +19,26 @@
 #include "frame.hh"
 #include "x11painter.hh"
 
-///
 class X11Output
 {
 public:
-  ///
   X11Output( X11PainterPtr painter );
-  ///
   virtual ~X11Output(void);
-  ///
   virtual void write( FramePtr frame ) throw (Error);
-  ///
   virtual bool status(void) const;
-  ///
   X11PainterPtr painter(void) { return m_painter; }
-  ///
   FramePtr frame(void) { return m_frame; }
-  ///
   static VALUE cRubyClass;
-  ///
   static VALUE registerRubyClass( VALUE module );
-  ///
   static void deleteRubyObject( void *ptr );
-  ///
   static void markRubyObject( void *ptr );
-  ///
   static VALUE wrapStatus( VALUE rbSelf );
-  ///
   static VALUE wrapWrite( VALUE rbSelf, VALUE rbFrame );
 protected:
-  ///
   FramePtr m_frame;
-  ///
   X11PainterPtr m_painter;
 };
 
-///
 typedef boost::shared_ptr< X11Output > X11OutputPtr;
 
 #endif
