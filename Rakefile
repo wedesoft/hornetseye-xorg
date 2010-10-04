@@ -11,7 +11,7 @@ CXX = ENV[ 'CXX' ] || 'g++'
 STRIP = ENV[ 'STRIP' ] || 'strip'
 RB_FILES = FileList[ 'lib/**/*.rb' ]
 CC_FILES = FileList[ 'ext/*.cc' ]
-HH_FILES = FileList[ 'ext/*.hh' ]
+HH_FILES = FileList[ 'ext/*.hh' ] + FileList[ 'ext/*.tcc' ]
 TC_FILES = FileList[ 'test/tc_*.rb' ]
 TS_FILES = FileList[ 'test/ts_*.rb' ]
 SO_FILE = "ext/#{PKG_NAME.tr '\-', '_'}.so"
@@ -27,7 +27,7 @@ HOMEPAGE = %q{http://wedesoft.github.com/hornetseye-xorg/}
 
 OBJ = CC_FILES.ext 'o'
 $CXXFLAGS = ENV[ 'CXXFLAGS' ] || ''
-$CXXFLAGS = "#{$CXXFLAGS} -fPIC"
+$CXXFLAGS = "#{$CXXFLAGS} -fPIC -DNDEBUG"
 if RbConfig::CONFIG[ 'rubyhdrdir' ]
   $CXXFLAGS += "#{$CXXFLAGS} -I#{RbConfig::CONFIG[ 'rubyhdrdir' ]} " +
               "-I#{RbConfig::CONFIG[ 'rubyhdrdir' ]}/#{RbConfig::CONFIG[ 'arch' ]}"
@@ -44,7 +44,7 @@ desc 'Compile Ruby extension (default)'
 task :all => [ SO_FILE ]
 
 file SO_FILE => OBJ do |t|
-   sh "#{CXX} -shared -o #{t.name} #{OBJ} -lavformat -lswscale #{$LIBRUBYARG}"
+   sh "#{CXX} -shared -o #{t.name} #{OBJ} -lX11 #{$LIBRUBYARG}"
    # sh "#{STRIP} --strip-all #{t.name}"
 end
 

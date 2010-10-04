@@ -14,6 +14,11 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 #include <ruby.h>
+#include "x11output.hh"
+#include "ximagepainter.hh"
+#include "xvideoimagepainter.hh"
+#include "x11display.hh"
+#include "x11window.hh"
 
 #ifdef WIN32
 #define DLLEXPORT __declspec(dllexport)
@@ -31,6 +36,11 @@ extern "C" {
   {
     rb_require( "hornetseye_frame" );
     VALUE rbHornetseye = rb_define_module( "Hornetseye" );
+    X11Output::registerRubyClass( rbHornetseye );
+    XImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
+    // XVideoImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
+    X11Display::registerRubyClass( rbHornetseye );
+    X11Window::registerRubyClass( rbHornetseye );
     rb_require( "hornetseye_xorg_ext.rb" );
   }
 
