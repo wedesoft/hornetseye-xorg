@@ -3,6 +3,7 @@ require 'date'
 require 'rake/clean'
 require 'rake/testtask'
 require 'rake/packagetask'
+require 'rake/loaders/makefile'
 require 'rbconfig'
 
 PKG_NAME = 'hornetseye-xorg'
@@ -44,7 +45,7 @@ desc 'Compile Ruby extension (default)'
 task :all => [ SO_FILE ]
 
 file SO_FILE => OBJ do |t|
-   sh "#{CXX} -shared -o #{t.name} #{OBJ} -lX11 #{$LIBRUBYARG}"
+   sh "#{CXX} -shared -o #{t.name} #{OBJ} -lX11 -lXv #{$LIBRUBYARG}"
    # sh "#{STRIP} --strip-all #{t.name}"
 end
 
@@ -169,12 +170,10 @@ rule '.o' => '.cc' do |t|
    sh "#{CXX} #{$CXXFLAGS} -c -o #{t.name} #{t.source}"
 end
 
-#file 'ext/avinput.o' => [ 'ext/avinput.cc', 'ext/avinput.hh', 'ext/error.hh',
-#                          'ext/frame.hh' ]
-#file 'ext/avoutput.o' => [ 'ext/avoutput.cc', 'ext/avoutput.hh', 'ext/error.hh',
-#                           'ext/frame.hh' ]
-#file 'ext/frame.o' => [ 'ext/frame.cc', 'ext/frame.hh' ]
-file 'ext/init.o' => [ 'ext/init.cc' ]
+file ".depends.mf" => CC_FILES do |t|
+  sh "#{CXX} -MM #{$CXXFLAGS} #{t.prerequisites.join ' '} > #{t.name}"
+end
+import ".depends.mf"
 
 CLEAN.include 'ext/*.o'
 CLOBBER.include SO_FILE, 'doc', '.yardoc'

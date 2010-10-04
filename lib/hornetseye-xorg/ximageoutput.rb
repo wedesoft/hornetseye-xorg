@@ -14,7 +14,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'hornetseye_frame'
-require 'hornetseye-xorg/x11display'
-require 'hornetseye-xorg/ximageoutput'
+# Namespace of Hornetseye computer vision library
+module Hornetseye
+
+  class XImageOutput
+
+    alias_method :orig_write, :write
+
+    def write( frame )
+      frame = frame.to_type UBYTERGB unless frame.typecode == UBYTERGB
+      orig_write frame
+    end
+
+  end
+
+end
 

@@ -20,7 +20,7 @@
 #include <X11/extensions/Xvlib.h>
 #include <set>
 #include "x11painter.hh"
-#if 0
+
 class X11Window;
 class XVideoOutput;
 
@@ -73,5 +73,4 @@ protected:
 
 typedef boost::shared_ptr< XVideoImagePainter > XVideoImagePainterPtr;
 
-#endif
 #endif

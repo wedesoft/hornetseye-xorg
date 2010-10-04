@@ -14,7 +14,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'hornetseye_frame'
-require 'hornetseye-xorg/x11display'
-require 'hornetseye-xorg/ximageoutput'
+# Namespace of Hornetseye computer vision library
+module Hornetseye
+
+  class X11Display
+
+    class << self
+
+      alias_method :orig_new, :new
+
+      def new( name = ENV[ 'DISPLAY' ] )
+        if name.nil? and ENV[ 'DISPLAY' ].nil?
+          raise "DISPLAY variable was not set"
+        end
+        orig_new name
+      end
+
+    end
+
+  end
+
+end
 

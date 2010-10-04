@@ -38,7 +38,7 @@ extern "C" {
     VALUE rbHornetseye = rb_define_module( "Hornetseye" );
     X11Output::registerRubyClass( rbHornetseye );
     XImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
-    // XVideoImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
+    XVideoImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
     X11Display::registerRubyClass( rbHornetseye );
     X11Window::registerRubyClass( rbHornetseye );
     rb_require( "hornetseye_xorg_ext.rb" );

@@ -13,7 +13,6 @@
 
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
-#if 0
 #ifndef NDEBUG
 #include <iostream>
 #include <iomanip>
@@ -79,15 +78,10 @@ void XVideoImagePainter::paint( bool x11Event ) throw (Error)
                   "support YV12, I420, or RGB24" );
       string typecode = uidToTypecode( uid );
       if ( frame->typecode() != typecode ) {
-        if ( typecode == "UBYTERGB" )
-          frame = contiguous( toUBYTERGB( frame ) );
-        else if ( typecode == "YV12" )
-          frame = toYV12( frame );
-        else if ( typecode == "I420" )
-          frame = toI420( frame );
-        else {
-          assert( false );
-        };
+        VALUE rbFrame = rb_funcall( frame->rubyObject(), rb_intern( "typecode" ), 1,
+                                    rb_str_new( typecode.c_str(),
+                                                typecode.length() ) );
+        frame = FramePtr( new Frame( rbFrame ) );
       };
       if ( m_xvImage != NULL ) {
         if ( m_xvImage->id != uid ||
@@ -153,7 +147,7 @@ FramePtr XVideoImagePainter::alignYV12( FramePtr frame )
 #endif
     FramePtr dest( new Frame( "YV12",
                               m_xvImage->width, m_xvImage->height ) );
-    const unsigned char
+    const char
       *src_y = frame->data();
     const signed char
       *src_v = (const signed char *)src_y + widtha * height,
@@ -437,4 +431,4 @@ VALUE XVideoImagePainter::wrapNew( VALUE rbClass )
                              new X11OutputPtr( ptr ) );
   return retVal;
 }
-#endif
+

@@ -31,88 +31,48 @@ class X11Window
 {
   friend class X11Display;
 public:
-  ///
   X11Window( X11DisplayPtr display, X11PainterPtr painter,
              int width, int height, Window parent = 0 );
-  ///
   virtual ~X11Window(void);
-  ///
   int width(void) const { return m_width; }
-  ///
   int height(void) const { return m_height; }
-  ///
   void show(void) throw (Error);
-  ///
   void close(void);
-  ///
   void setTitle( const char *_title );
-  ///
   XVisualInfo *visualInfo(void) { return m_visualInfo; }
-  ///
   X11DisplayPtr display(void) { return m_display; }
-  ///
   Window get(void) { return m_window; }
-  /// Resize the window.
   void resize( int width, int height ) throw (Error);
-  ///
   void repaint( bool x11Event = false ) throw (Error);
-  ///
   GC gc(void) { return m_gc; }
-  /** Handle X11 events.
-      The default-implementation just filters for exposure events and
-      forwards them to \c paintEvent. */
   virtual void handleEvent( XEvent &event ) throw (Error);
-  ///
   virtual void paintEvent( bool x11Event ) throw (Error);
-  ///
   virtual void keyEvent( XKeyEvent &xkey ) throw (Error);
-  ///
   static VALUE cRubyClass;
-  ///
   static VALUE registerRubyClass( VALUE module );
-  ///
   static void deleteRubyObject( void *ptr );
-  ///
   static VALUE wrapNew( VALUE rbClass, VALUE rbDisplay, VALUE rbX11Output,
                         VALUE rbWidth, VALUE rbHeight );
-  ///
   static VALUE wrapSetTitle( VALUE rbSelf, VALUE rbTitle );
-  ///
   static VALUE wrapWidth( VALUE rbSelf );
-  ///
   static VALUE wrapHeight( VALUE rbSelf );
-  ///
   static VALUE wrapResize( VALUE rbSelf, VALUE rbWidth, VALUE rbHeight );
-  ///
   static VALUE wrapShow( VALUE rbSelf );
-  ///
   static VALUE wrapClose( VALUE rbSelf );
 protected:
-  ///
   static Bool waitForNotify( Display *, XEvent *e, char *arg );
-  ///
   X11DisplayPtr m_display;
-  ///
   XVisualInfo *m_visualInfo;
-  /// Colormap of X11-visual.
   Colormap m_colourMap;
-  /// X11 window.
   Window m_window;
-  /// Graphics context.
   GC m_gc;
-  ///
   X11PainterPtr m_painter;
-  ///
   int m_width;
-  ///
   int m_height;
-  ///
   Atom wmProtocols;
-  ///
   Atom wmDeleteWindow;
 };
 
-///
 typedef boost::shared_ptr< X11Window > X11WindowPtr;
 
 #endif

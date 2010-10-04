@@ -1,0 +1,9 @@
+.depends.mf
+doc
+hornetseye-xorg-*.tar.*
+pkg
+.yardoc
+*~
+*.gem
+*.swp
+

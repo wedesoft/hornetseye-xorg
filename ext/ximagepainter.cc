@@ -41,7 +41,6 @@
 #include "rubytools.hh"
 #include "x11window.hh"
 #include "x11output.hh"
-// #include "colourspace.hh"
 
 using namespace boost;
 using namespace std;
@@ -64,8 +63,6 @@ void XImagePainter::paint( bool ) throw (Error)
     FramePtr frame = m_imageSource->frame();
 
     if ( frame ) {
-      // frame = contiguous( toUBYTERGB( frame ) );
-
       // Create scaled BGRA data.
       int
         newWidth  = m_window->width(),
