@@ -32,9 +32,8 @@ module Hornetseye
 
       def show( *args, &action )
         options = args.last.is_a?( Hash ) ? args.pop : {}
-        options = { :title => 'Hornetseye' }.merge options
+        options = { :title => 'Hornetseye', :output => XImageOutput }.merge options
         unless action
-          options = { :output => XImageOutput }.merge options
           frame, width, height = *args
           width  ||= frame.width
           height ||= ( width.to_f * frame.height / frame.width ).round
@@ -51,7 +50,6 @@ module Hornetseye
           end
           frame
         else
-          options = { :output => XVideoOutput }.merge options
           width, height = *args
           result = action.call
           width  ||= result.shape[0]
