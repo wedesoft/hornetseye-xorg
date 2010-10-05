@@ -16,6 +16,10 @@
 #ifndef HORNETSEYE_RUBYINC_HH
 #define HORNETSEYE_RUBYINC_HH
 
+#ifdef RSHIFT
+#undef RSHIFT
+#endif
+
 #define gettimeofday rubygettimeofday
 #define timezone rubygettimezone
 #include <ruby.h>

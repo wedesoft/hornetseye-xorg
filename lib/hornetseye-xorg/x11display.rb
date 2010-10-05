@@ -30,6 +30,63 @@ module Hornetseye
         orig_new name
       end
 
+      def show( *args, &action )
+        options = args.last.is_a?( Hash ) ? args.pop : {}
+        options = { :title => 'Hornetseye' }.merge options
+        unless action
+          options = { :output => XImageOutput }.merge options
+          frame, width, height = *args
+          width  ||= frame.width
+          height ||= ( width.to_f * frame.height / frame.width ).round
+          display = new
+          output = options[ :output ].new
+          output.write frame
+          window = X11Window.new display, output, width, height
+          window.title = options[ :title ]
+          begin
+            window.show
+            display.event_loop
+          ensure
+            window.close
+          end
+        else
+          options = { :output => XVideoOutput }.merge options
+          width, height = *args
+          result = action.call
+          width  ||= result.shape[0]
+          height ||= ( width.to_f * result.shape[1] / result.shape[0] ).round
+          display = new
+          output = options[ :output ].new
+          window = X11Window.new display, output, width, height
+          window.title = options[ :title ]
+          begin
+            window.show
+            t = Time.new.to_f
+            while true
+              t += 1.0 / options[ :frame_rate ] if options[ :frame_rate ]
+              output.write result
+              delay = t - Time.new.to_f
+              if delay > 0
+                display.event_loop delay
+              else
+                display.process_events
+              end
+              break unless display.status?
+              result = action.call
+            end
+          ensure
+            window.close
+          end
+        end
+      end
+
+    end
+
+    alias_method :orig_event_loop, :event_loop
+
+    def event_loop( timeout = INFINITE )
+      timeout *= 1000 unless timeout == INFINITE
+      orig_event_loop timeout
     end
 
   end

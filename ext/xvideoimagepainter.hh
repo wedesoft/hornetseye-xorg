@@ -33,6 +33,7 @@ public:
   virtual void unregisterWindow(void);
   virtual XVisualInfo *visualInfo( X11DisplayPtr display ) throw (Error);
   static VALUE cRubyClass;
+  static VALUE rbHornetseye;
   static VALUE registerRubyClass( VALUE module, VALUE cX11Output );
   static VALUE wrapNew( VALUE rbClass );
 protected:

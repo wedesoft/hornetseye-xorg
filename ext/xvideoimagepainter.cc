@@ -29,6 +29,7 @@
 using namespace std;
 
 VALUE XVideoImagePainter::cRubyClass = Qnil;
+VALUE XVideoImagePainter::rbHornetseye = Qnil;
 
 std::set< XvPortID > XVideoImagePainter::grabbedPorts;
   
@@ -78,9 +79,12 @@ void XVideoImagePainter::paint( bool x11Event ) throw (Error)
                   "support YV12, I420, or RGB24" );
       string typecode = uidToTypecode( uid );
       if ( frame->typecode() != typecode ) {
-        VALUE rbFrame = rb_funcall( frame->rubyObject(), rb_intern( "typecode" ), 1,
-                                    rb_str_new( typecode.c_str(),
-                                                typecode.length() ) );
+        VALUE
+          rbTypecode = rb_funcall( rbHornetseye, rb_intern( "const_get" ), 1,
+                                   rb_str_new( typecode.c_str(),
+                                               typecode.length() ) ),
+          rbFrame = rb_funcall( frame->rubyObject(), rb_intern( "to_type" ), 1,
+                                rbTypecode );
         frame = FramePtr( new Frame( rbFrame ) );
       };
       if ( m_xvImage != NULL ) {
@@ -415,6 +419,7 @@ VALUE XVideoImagePainter::registerRubyClass( VALUE module,
                                              VALUE cX11Output )
 {
   cRubyClass = rb_define_class_under( module, "XVideoOutput", cX11Output );
+  rbHornetseye = module;
   rb_define_singleton_method( cRubyClass, "new",
                               RUBY_METHOD_FUNC( wrapNew ), 0 );
   return cRubyClass;

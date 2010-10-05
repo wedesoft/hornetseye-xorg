@@ -188,9 +188,9 @@ VALUE X11Display::registerRubyClass( VALUE module )
                     RUBY_METHOD_FUNC( wrapWidth ), 0 );
   rb_define_method( cRubyClass, "height",
                     RUBY_METHOD_FUNC( wrapHeight ), 0 );
-  rb_define_method( cRubyClass, "eventLoop",
+  rb_define_method( cRubyClass, "event_loop",
                     RUBY_METHOD_FUNC( wrapEventLoop ), 1 );
-  rb_define_method( cRubyClass, "processEvents",
+  rb_define_method( cRubyClass, "process_events",
                     RUBY_METHOD_FUNC( wrapProcessEvents ), 0 );
   rb_define_method( cRubyClass, "status?",
                     RUBY_METHOD_FUNC( wrapStatus ), 0 );
