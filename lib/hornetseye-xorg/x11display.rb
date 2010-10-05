@@ -49,6 +49,7 @@ module Hornetseye
           ensure
             window.close
           end
+          frame
         else
           options = { :output => XVideoOutput }.merge options
           width, height = *args
@@ -77,6 +78,7 @@ module Hornetseye
           ensure
             window.close
           end
+          display
         end
       end
 
