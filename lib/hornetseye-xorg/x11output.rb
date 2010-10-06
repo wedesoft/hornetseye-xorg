@@ -14,10 +14,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'hornetseye_frame'
-require 'hornetseye-xorg/x11display'
-require 'hornetseye-xorg/x11output'
-require 'hornetseye-xorg/ximageoutput'
-require 'hornetseye-xorg/node'
-require 'hornetseye-xorg/frame'
+# Namespace of Hornetseye computer vision library
+module Hornetseye
+
+  class X11Output
+
+    class << self
+
+      def new( *args )
+        raise 'X11Output is an abstract class'
+      end
+
+    end
+
+  end
+
+end
 
