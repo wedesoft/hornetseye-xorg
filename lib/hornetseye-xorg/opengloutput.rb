@@ -17,10 +17,11 @@
 # Namespace of Hornetseye computer vision library
 module Hornetseye
 
-  class XImageOutput
+  class OpenGLOutput
 
     def write( frame )
-      frame = frame.to_type UBYTERGB unless frame.typecode == UBYTERGB
+      target = frame.rgb? ? UBYTERGB : UBYTE
+      frame = frame.to_type target unless frame.typecode == target
       super frame
     end
 

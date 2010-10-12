@@ -16,6 +16,7 @@
 #include "rubyinc.hh"
 #include "x11output.hh"
 #include "ximagepainter.hh"
+#include "openglimagepainter.hh"
 #include "xvideoimagepainter.hh"
 #include "x11display.hh"
 #include "x11window.hh"
@@ -39,6 +40,7 @@ extern "C" {
     VALUE rbHornetseye = rb_define_module( "Hornetseye" );
     X11Output::registerRubyClass( rbHornetseye );
     XImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
+    OpenGLImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
     XVideoImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
     X11Display::registerRubyClass( rbHornetseye );
     X11Window::registerRubyClass( rbHornetseye );

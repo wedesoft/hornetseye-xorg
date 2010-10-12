@@ -18,6 +18,7 @@ require 'hornetseye_frame'
 require 'hornetseye-xorg/x11display'
 require 'hornetseye-xorg/x11output'
 require 'hornetseye-xorg/ximageoutput'
+require 'hornetseye-xorg/opengloutput'
 require 'hornetseye-xorg/node'
 require 'hornetseye-xorg/frame'
 
