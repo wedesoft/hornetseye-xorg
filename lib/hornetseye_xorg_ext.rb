@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'hornetseye_frame'
 require 'hornetseye-xorg/x11display'
 require 'hornetseye-xorg/x11output'
 require 'hornetseye-xorg/ximageoutput'
