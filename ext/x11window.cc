@@ -260,7 +260,6 @@ X11Window::X11Window( X11DisplayPtr display, X11PainterPtr painter,
     wmProtocols = XInternAtom( display->get(), "WM_PROTOCOLS", False );
     wmDeleteWindow = XInternAtom( display->get(), "WM_DELETE_WINDOW", False );
     XSetWMProtocols( display->get(), m_window, &wmDeleteWindow, 1 );
-#ifdef HAVE_XPM
     XWMHints wmHints;
     XpmCreatePixmapFromData( display->get(), m_window,
                              (char **)hornetseye_xpm,
@@ -269,7 +268,6 @@ X11Window::X11Window( X11DisplayPtr display, X11PainterPtr painter,
                              0 );
     wmHints.flags = IconPixmapHint | IconMaskHint;
     XSetWMHints( display->get(), m_window, &wmHints );
-#endif
 
     try {
 
