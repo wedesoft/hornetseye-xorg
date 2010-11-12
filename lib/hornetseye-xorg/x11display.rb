@@ -76,7 +76,7 @@ module Hornetseye
           ensure
             window.close
           end
-          display
+          result
         end
       end
 
