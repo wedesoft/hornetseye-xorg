@@ -20,8 +20,7 @@ module Hornetseye
   class XImageOutput
 
     def write( frame )
-      frame = frame.to_type UBYTERGB unless frame.typecode == UBYTERGB
-      super frame
+      super frame.to_type( UBYTERGB ).memorise
     end
 
   end

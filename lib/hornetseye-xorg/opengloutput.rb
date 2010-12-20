@@ -21,8 +21,7 @@ module Hornetseye
 
     def write( frame )
       target = frame.rgb? ? UBYTERGB : UBYTE
-      frame = frame.to_type target unless frame.typecode == target
-      super frame
+      super frame.to_type( target ).memorise
     end
 
   end

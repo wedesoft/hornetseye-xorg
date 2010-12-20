@@ -37,7 +37,7 @@ module Hornetseye
           frame, width, height = *args
           width  ||= frame.width
           height ||= ( width.to_f * frame.height / frame.width ).round
-          display = new
+          display = options[ :display ] || new
           output = options[ :output ].new
           output.write frame
           window = X11Window.new display, output, width, height
@@ -51,10 +51,10 @@ module Hornetseye
           frame
         else
           width, height = *args
-          result = action.call
+          display = options[ :display ] || new
+          result = action.call display
           width  ||= result.shape[0]
           height ||= ( width.to_f * result.shape[1] / result.shape[0] ).round
-          display = new
           output = options[ :output ].new
           window = X11Window.new display, output, width, height
           window.title = options[ :title ]
@@ -71,7 +71,7 @@ module Hornetseye
                 display.process_events
               end
               break unless display.status?
-              result = action.call
+              result = action.call display
             end
           ensure
             window.close
