@@ -13,6 +13,16 @@
 
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+extern "C" {
+#ifndef HAVE_LIBSWSCALE_INCDIR
+  #include <ffmpeg/swscale.h>
+#else
+  #include <libswscale/swscale.h>
+#endif
+}
 #ifndef NDEBUG
 #include <iostream>
 #include <iomanip>
@@ -115,7 +125,7 @@ void XVideoImagePainter::paint( bool x11Event ) throw (Error)
         m_xvImage->data = (char *)frame->data();
 
       if ( frame->typecode() == "YV12" ) {
-        // YV12 requires alignment for X video output.
+        // YV12 may require alignment for X video output.
         frame = alignYV12( frame );
         m_xvImage->data = (char *)frame->data();
       };
@@ -151,38 +161,28 @@ FramePtr XVideoImagePainter::alignYV12( FramePtr frame )
 #endif
     FramePtr dest( new Frame( "YV12",
                               m_xvImage->width, m_xvImage->height ) );
-    const char
-      *src_y = frame->data();
-    const signed char
-      *src_v = (const signed char *)src_y + widtha * height,
-      *src_u = src_v + width2a * height2;
-    unsigned char
-      *dest_y = (unsigned char *)dest->data();
-    signed char
-      *dest_v = (signed char *)dest_y + m_xvImage->offsets[1],
-      *dest_u = (signed char *)dest_y + m_xvImage->offsets[2];
-    for ( int y=0; y<height; y+=2 ) {
-      for ( int x=0; x<width; x+=2 ) {
-        dest_y[      0] = src_y[       0];
-        dest_y[      1] = src_y[       1];
-        dest_y[m_xvImage->pitches[0]  ] = src_y[widtha  ];
-        dest_y[m_xvImage->pitches[0]+1] = src_y[widtha+1];
-        *dest_v = *src_v;
-        *dest_u = *src_u;
-        src_y += 2;
-        src_u++;
-        src_v++;
-        dest_y += 2;
-        dest_u++;
-        dest_v++;
-      };
-      src_y += 2 * widtha - width;
-      src_v += width2a - width2;
-      src_u += width2a - width2;
-      dest_y += 2 * m_xvImage->pitches[0] - width;
-      dest_v += m_xvImage->pitches[1] - width2;
-      dest_u += m_xvImage->pitches[2] - width2;
-    };
+    uint8_t *sourceData[4];
+    int sourceLineSize[4];
+    sourceData[0] = (uint8_t *)frame->data();
+    sourceData[2] = (uint8_t *)frame->data() + widtha * height;
+    sourceData[1] = (uint8_t *)sourceData[2] + width2a * height2;
+    sourceLineSize[0] = widtha;
+    sourceLineSize[1] = width2a;
+    sourceLineSize[2] = width2a;
+    uint8_t *destData[4];
+    int destLineSize[4];
+    destData[0] = (uint8_t *)dest->data();
+    destData[2] = (uint8_t *)dest->data() + m_xvImage->offsets[1];
+    destData[1] = (uint8_t *)dest->data() + m_xvImage->offsets[2];
+    destLineSize[0] = m_xvImage->pitches[0];
+    destLineSize[1] = m_xvImage->pitches[2];
+    destLineSize[2] = m_xvImage->pitches[1];
+    SwsContext *swsContext = sws_getContext( width, height, PIX_FMT_YUV420P,
+                                             width, height, PIX_FMT_YUV420P,
+                                             SWS_FAST_BILINEAR, 0, 0, 0 );
+    sws_scale( swsContext, sourceData, sourceLineSize, 0,
+               height, destData, destLineSize );
+    sws_freeContext( swsContext );
     retVal = dest;
   } else
     retVal = frame;
