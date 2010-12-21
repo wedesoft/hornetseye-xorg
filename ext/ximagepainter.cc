@@ -89,6 +89,7 @@ void XImagePainter::paint( bool ) throw (Error)
       destLineSize[0] = 4 * m_window->width();
       sws_scale( swsContext, sourceData, sourceLineSize, 0,
                  frame->height(), destData, destLineSize );
+      sws_freeContext( swsContext );
       XImage *xImage = XCreateImage( m_display->get(), m_visualInfo.visual,
                                      24, ZPixmap, 0, (char *)array.get(),
                                      m_window->width(), m_window->height(),
