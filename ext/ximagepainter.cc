@@ -78,7 +78,7 @@ void XImagePainter::paint( bool ) throw (Error)
       SwsContext *swsContext =
         sws_getContext( frame->width(), frame->height(), PIX_FMT_RGB24,
                         m_window->width(), m_window->height(), PIX_FMT_BGRA,
-                        SWS_FAST_BILINEAR, 0, 0, 0 );
+                        SWS_POINT, 0, 0, 0 );
       uint8_t *sourceData[4];
       int sourceLineSize[4];
       sourceData[0] = (uint8_t *)frame->data();

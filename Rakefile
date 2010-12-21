@@ -7,7 +7,7 @@ require 'rake/loaders/makefile'
 require 'rbconfig'
 
 PKG_NAME = 'hornetseye-xorg'
-PKG_VERSION = '0.5.1'
+PKG_VERSION = '0.5.2'
 CFG = RbConfig::CONFIG
 CXX = ENV[ 'CXX' ] || 'g++'
 RB_FILES = FileList[ 'lib/**/*.rb' ]
