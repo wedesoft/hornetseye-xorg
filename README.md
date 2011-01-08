@@ -13,9 +13,9 @@ This Ruby extension provides graphical output under X.Org.
 Installation
 ------------
 
-*hornetseye-xorg* requires the X.Org headers. If you are running Debian or (K)ubuntu, you can install them like this:
+*hornetseye-xorg* requires the X.Org and Mesa development headers. If you are running Debian or (K)ubuntu, you can install them like this:
 
-    $ sudo aptitude install xserver-xorg-dev
+    $ sudo aptitude install xserver-xorg-dev libgl1-mesa-dev libglu1-mesa-dev
 
 To install this Ruby extension, use the following command:
 
