@@ -32,7 +32,8 @@ module Hornetseye
 
       def show( *args, &action )
         options = args.last.is_a?( Hash ) ? args.pop : {}
-        options = { :title => 'Hornetseye', :output => XImageOutput }.merge options
+        options = { :title => 'Hornetseye', :border => true,
+                    :output => XImageOutput }.merge options
         unless action
           frame, width, height = *args
           width  ||= frame.width
@@ -40,7 +41,7 @@ module Hornetseye
           display = options[ :display ] || new
           output = options[ :output ].new
           output.write frame
-          window = X11Window.new display, output, width, height
+          window = X11Window.new display, output, width, height, options
           window.title = options[ :title ]
           begin
             window.show
@@ -56,7 +57,7 @@ module Hornetseye
           width  ||= result.shape[0]
           height ||= ( width.to_f * result.shape[1] / result.shape[0] ).round
           output = options[ :output ].new
-          window = X11Window.new display, output, width, height
+          window = X11Window.new display, output, width, height, options
           window.title = options[ :title ]
           begin
             window.show

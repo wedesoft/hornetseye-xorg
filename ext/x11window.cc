@@ -199,33 +199,24 @@ static const char *hornetseye_xpm[] = {
   "e.^ % V.V.Q y j.V.V.U t V.V.[ M "
 };
 
+typedef struct {
+  unsigned long flags;
+  unsigned long functions;
+  unsigned long decorations;
+  long inputMode;
+  unsigned long status;
+} Hints;
+
 VALUE X11Window::cRubyClass = Qnil;
 
-X11Window::X11Window( X11DisplayPtr display, X11PainterPtr painter,
-                      int width, int height, Window parent ):
+X11Window::X11Window(X11DisplayPtr display, X11PainterPtr painter,
+                     int width, int height, Window parent, bool border):
   m_display(display), m_painter(painter), m_width(width), m_height(height)
 {
-  // state = true;
   ERRORMACRO( width > 0 && height > 0, Error, ,
               width << 'x' << height << " is an illegal window size." );
 
   m_visualInfo = painter->visualInfo( display );
-  /* // Request true-colour X11 visual.
-     if ( !XMatchVisualInfo( display->get(),
-     DefaultScreen( display->get() ),
-     24, TrueColor, &m_visualInfo) ) {
-     if ( !XMatchVisualInfo( display->get(),
-     DefaultScreen( display->get() ),
-     16, TrueColor, &m_visualInfo ) ) {
-     if ( !XMatchVisualInfo( display->get(),
-     DefaultScreen( display->get() ),
-     15, TrueColor, &m_visualInfo ) ) {
-     ERRORMACRO( false, Error, ,
-     "Could not get X11 visual for true-colour display." );
-     };
-     };
-     }; */
-
   // Create a color map.
   m_colourMap = XCreateColormap( m_display->get(),
                                  DefaultRootWindow( display->get() ),
@@ -257,9 +248,17 @@ X11Window::X11Window( X11DisplayPtr display, X11PainterPtr painter,
                               &attributes );
     ERRORMACRO( m_window != 0, Error, , "Error creating X11 window." );
 
-    wmProtocols = XInternAtom( display->get(), "WM_PROTOCOLS", False );
-    wmDeleteWindow = XInternAtom( display->get(), "WM_DELETE_WINDOW", False );
-    XSetWMProtocols( display->get(), m_window, &wmDeleteWindow, 1 );
+    Atom wmProperty = XInternAtom(display->get(), "_MOTIF_WM_HINTS", True);
+    Hints hints;
+    hints.flags = 2;
+    hints.decorations = border ? 1 : 0;
+    XChangeProperty(display->get(), m_window, wmProperty, wmProperty, 32,
+                    PropModeReplace,(unsigned char *)&hints, 5);
+
+    m_wmProtocols = XInternAtom( display->get(), "WM_PROTOCOLS", False );
+    m_wmDeleteWindow = XInternAtom( display->get(), "WM_DELETE_WINDOW", False );
+    XSetWMProtocols( display->get(), m_window, &m_wmDeleteWindow, 1 );
+
     XWMHints wmHints;
     XpmCreatePixmapFromData( display->get(), m_window,
                              (char **)hornetseye_xpm,
@@ -377,8 +376,8 @@ void X11Window::handleEvent( XEvent &event ) throw (Error)
     paintEvent( true );
     break;
   case ClientMessage:
-    if ( ( event.xclient.message_type == wmProtocols ) &&
-         ( (Atom)event.xclient.data.l[0] == wmDeleteWindow ) ) {
+    if ( ( event.xclient.message_type == m_wmProtocols ) &&
+         ( (Atom)event.xclient.data.l[0] == m_wmDeleteWindow ) ) {
 #ifndef NDEBUG
       cerr << "Delete message" << endl;
 #endif
@@ -430,8 +429,8 @@ void X11Window::keyEvent( XKeyEvent &xkey ) throw (Error)
 VALUE X11Window::registerRubyClass( VALUE module )
 {
   cRubyClass = rb_define_class_under( module, "X11Window", rb_cObject );
-  rb_define_singleton_method( cRubyClass, "new",
-                              RUBY_METHOD_FUNC( wrapNew ), 4 );
+  rb_define_singleton_method(cRubyClass, "new",
+                             RUBY_METHOD_FUNC( wrapNew ), 5);
   rb_define_method( cRubyClass, "title=",
                     RUBY_METHOD_FUNC( wrapSetTitle ), 1 );
   rb_define_method( cRubyClass, "width",
@@ -453,7 +452,7 @@ void X11Window::deleteRubyObject( void *ptr )
 }
 
 VALUE X11Window::wrapNew( VALUE rbClass, VALUE rbDisplay, VALUE rbX11Output,
-                          VALUE rbWidth, VALUE rbHeight )
+                          VALUE rbWidth, VALUE rbHeight, VALUE rbBorder )
 {
   VALUE retVal = Qnil;
   try {
@@ -467,7 +466,7 @@ VALUE X11Window::wrapNew( VALUE rbClass, VALUE rbDisplay, VALUE rbX11Output,
                    x11Output );
     X11WindowPtr ptr
       ( new X11Window( *display, (*x11Output)->painter(),
-                       NUM2INT( rbWidth ), NUM2INT( rbHeight ) ) );
+                       NUM2INT( rbWidth ), NUM2INT( rbHeight ), 0, rbBorder == Qtrue ) );
     retVal = Data_Wrap_Struct( rbClass, 0, X11Window::deleteRubyObject,
                                new X11WindowPtr( ptr ) );
   } catch ( std::exception &e ) {

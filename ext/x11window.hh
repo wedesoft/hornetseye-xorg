@@ -31,8 +31,8 @@ class X11Window
 {
   friend class X11Display;
 public:
-  X11Window( X11DisplayPtr display, X11PainterPtr painter,
-             int width, int height, Window parent = 0 );
+  X11Window(X11DisplayPtr display, X11PainterPtr painter,
+            int width, int height, Window parent = 0, bool border = true);
   virtual ~X11Window(void);
   int width(void) const { return m_width; }
   int height(void) const { return m_height; }
@@ -52,7 +52,7 @@ public:
   static VALUE registerRubyClass( VALUE module );
   static void deleteRubyObject( void *ptr );
   static VALUE wrapNew( VALUE rbClass, VALUE rbDisplay, VALUE rbX11Output,
-                        VALUE rbWidth, VALUE rbHeight );
+                        VALUE rbWidth, VALUE rbHeight, VALUE rbBorder );
   static VALUE wrapSetTitle( VALUE rbSelf, VALUE rbTitle );
   static VALUE wrapWidth( VALUE rbSelf );
   static VALUE wrapHeight( VALUE rbSelf );
@@ -69,8 +69,8 @@ protected:
   X11PainterPtr m_painter;
   int m_width;
   int m_height;
-  Atom wmProtocols;
-  Atom wmDeleteWindow;
+  Atom m_wmProtocols;
+  Atom m_wmDeleteWindow;
 };
 
 typedef boost::shared_ptr< X11Window > X11WindowPtr;

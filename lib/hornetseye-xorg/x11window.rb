@@ -1,5 +1,5 @@
 # hornetseye-xorg - Graphical output under X.Org
-# Copyright (C) 2010 Jan Wedekind
+# Copyright (C) 2011 Jan Wedekind
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,11 +14,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'hornetseye-xorg/x11display'
-require 'hornetseye-xorg/x11window'
-require 'hornetseye-xorg/x11output'
-require 'hornetseye-xorg/ximageoutput'
-require 'hornetseye-xorg/opengloutput'
-require 'hornetseye-xorg/node'
-require 'hornetseye-xorg/frame'
+# Namespace of Hornetseye computer vision library
+module Hornetseye
+
+  class X11Window
+
+    class << self
+
+      alias_method :orig_new, :new
+
+      def new(display, output, width, height, options = {})
+        options = { :border => true }.merge options
+        orig_new display, output, width, height, options[:border]
+      end
+
+    end
+
+  end
+
+end
 
