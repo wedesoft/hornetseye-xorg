@@ -20,9 +20,7 @@
 #include "x11output.hh"
 #include "ximagepainter.hh"
 #include "openglimagepainter.hh"
-#ifdef HAVE_XV
 #include "xvideoimagepainter.hh"
-#endif
 #include "x11display.hh"
 #include "x11window.hh"
 
@@ -46,9 +44,7 @@ extern "C" {
     X11Output::registerRubyClass( rbHornetseye );
     XImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
     OpenGLImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
-#ifdef HAVE_XV
     XVideoImagePainter::registerRubyClass( rbHornetseye, X11Output::cRubyClass );
-#endif
     X11Display::registerRubyClass( rbHornetseye );
     X11Window::registerRubyClass( rbHornetseye );
     rb_require( "hornetseye_xorg_ext.rb" );

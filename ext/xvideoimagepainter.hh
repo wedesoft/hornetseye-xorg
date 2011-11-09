@@ -16,6 +16,10 @@
 #ifndef HORNETSEYE_XVIDEOIMAGEPAINTER_HH
 #define HORNETSEYE_XVIDEOIMAGEPAINTER_HH
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <X11/extensions/Xv.h>
 #include <X11/extensions/Xvlib.h>
 #include <set>

@@ -7,7 +7,7 @@ require 'rake/loaders/makefile'
 require 'rbconfig'
 
 PKG_NAME = 'hornetseye-xorg'
-PKG_VERSION = '0.7.1'
+PKG_VERSION = '0.7.0'
 CFG = RbConfig::CONFIG
 CXX = ENV[ 'CXX' ] || 'g++'
 RB_FILES = FileList[ 'lib/**/*.rb' ]
@@ -108,11 +108,6 @@ file 'ext/config.h' do |t|
       raise 'Cannot find swscale.h header file'
     end
     s << "#undef HAVE_LIBSWSCALE_INCDIR\n"
-  end
-  if check_c_header 'X11/extensions/Xv.h'
-    s << "#define HAVE_XV 1\n"
-  else
-    s << "#undef HAVE_XV\n"
   end
   File.open( t.name, 'w' ) { |f| f.puts s }
 end
