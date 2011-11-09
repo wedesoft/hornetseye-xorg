@@ -46,7 +46,7 @@ desc 'Compile Ruby extension (default)'
 task :all => [ SO_FILE ]
 
 file SO_FILE => OBJ do |t|
-   sh "#{CXX} -shared -o #{t.name} #{OBJ} -lswscale -lGLU -lGL -lX11 -lXv -lXpm #{$LIBRUBYARG}"
+   sh "#{CXX} -shared -o #{t.name} #{OBJ} -lswscale -L/usr/X11R6/lib -lGLU -lGL -lX11 -lXv -lXpm #{$LIBRUBYARG}"
 end
 
 task :test => [ SO_FILE ]
