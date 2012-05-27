@@ -358,17 +358,17 @@ Atom XVideoImagePainter::findAtom( const char *name ) throw (Error)
   assert( m_port != 0 );
   XvAttribute *attributes;
   int numAttributes;
+  Atom retVal = None;
   attributes = XvQueryPortAttributes( m_display->get(), m_port,
                                       &numAttributes );
-  ERRORMACRO( attributes != NULL, Error, ,
-              "Error requesting attributes of X video port." );
-  Atom retVal = None;
-  for ( int i=0; i<numAttributes; i++ )
-    if ( strcmp( attributes[i].name, name ) == 0 ) {
-      retVal = XInternAtom( m_display->get(), name, False );
-      break;
-    }
-  XFree( attributes );
+  if (attributes != NULL) {
+    for ( int i=0; i<numAttributes; i++ )
+      if ( strcmp( attributes[i].name, name ) == 0 ) {
+        retVal = XInternAtom( m_display->get(), name, False );
+        break;
+      }
+    XFree( attributes );
+  }
   return retVal;
 }
 
