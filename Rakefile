@@ -7,7 +7,7 @@ require 'rake/loaders/makefile'
 require 'rbconfig'
 
 PKG_NAME = 'hornetseye-xorg'
-PKG_VERSION = '1.0.0'
+PKG_VERSION = '1.0.1'
 CFG = RbConfig::CONFIG
 CXX = ENV[ 'CXX' ] || 'g++'
 RB_FILES = FileList[ 'lib/**/*.rb' ]
@@ -28,6 +28,7 @@ HOMEPAGE = %q{http://wedesoft.github.com/hornetseye-xorg/}
 
 OBJ = CC_FILES.ext 'o'
 $CXXFLAGS = "-DNDEBUG -DHAVE_CONFIG_H -D__STDC_CONSTANT_MACROS #{CFG[ 'CPPFLAGS' ]} #{CFG[ 'CFLAGS' ]}"
+$CXXFLAGS = "#{$CXXFLAGS} -I/usr/X11/include"
 if CFG[ 'rubyhdrdir' ]
   $CXXFLAGS = "#{$CXXFLAGS} -I#{CFG[ 'rubyhdrdir' ]} " + 
               "-I#{CFG[ 'rubyhdrdir' ]}/#{CFG[ 'arch' ]}"
