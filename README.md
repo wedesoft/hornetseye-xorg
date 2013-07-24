@@ -15,7 +15,7 @@ Installation
 
 *hornetseye-xorg* requires the X.Org and Mesa development headers. If you are running Debian or (K)ubuntu, you can install them like this:
 
-    $ sudo aptitude install xserver-xorg-dev libxv-dev libxpm-dev libgl1-mesa-dev libglu1-mesa-dev
+    $ sudo aptitude install xserver-xorg-dev libxv-dev libxpm-dev libgl1-mesa-dev libglu1-mesa-dev libswscale-dev libboost-dev
 
 To install this Ruby extension, use the following command:
 
