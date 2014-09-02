@@ -124,8 +124,6 @@ int X11Display::width(void)
 
 int X11Display::height(void)
 {
-
-
   return DisplayHeight( m_display, DefaultScreen( m_display ) );
 }
 

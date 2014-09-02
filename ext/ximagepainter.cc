@@ -114,8 +114,8 @@ XVisualInfo *XImagePainter::visualInfo( X11DisplayPtr display )
   throw (Error)
 {
   ERRORMACRO( XMatchVisualInfo( display->get(),
-                                DefaultScreen( display->get() ) != 0,
-                                24, TrueColor, &m_visualInfo), Error, ,
+                                DefaultScreen( display->get() ),
+                                24, TrueColor, &m_visualInfo) != 0, Error, ,
               "Could not get 24-bit true-colour visual." );
   m_display = display;
   return &m_visualInfo;
