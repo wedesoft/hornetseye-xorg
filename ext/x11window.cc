@@ -250,7 +250,7 @@ X11Window::X11Window(X11DisplayPtr display, X11PainterPtr painter,
 
     Atom wmProperty = XInternAtom(display->get(), "_MOTIF_WM_HINTS", True);
     Hints hints;
-    hints.flags = 2;
+    hints.flags = 2;// WM_HINTS_DECORATIONS
     hints.decorations = border ? 1 : 0;
     XChangeProperty(display->get(), m_window, wmProperty, wmProperty, 32,
                     PropModeReplace,(unsigned char *)&hints, 5);

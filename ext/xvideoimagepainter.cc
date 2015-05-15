@@ -42,7 +42,7 @@ VALUE XVideoImagePainter::cRubyClass = Qnil;
 VALUE XVideoImagePainter::rbHornetseye = Qnil;
 
 std::set< XvPortID > XVideoImagePainter::grabbedPorts;
-  
+
 XVideoImagePainter::XVideoImagePainter(void):
   m_port(0), m_requireColourKey(false), m_colourKey(0), m_xvImage(NULL)
 {
