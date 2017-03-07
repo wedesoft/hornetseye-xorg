@@ -177,8 +177,8 @@ FramePtr XVideoImagePainter::alignYV12( FramePtr frame )
     destLineSize[0] = m_xvImage->pitches[0];
     destLineSize[1] = m_xvImage->pitches[2];
     destLineSize[2] = m_xvImage->pitches[1];
-    SwsContext *swsContext = sws_getContext( width, height, PIX_FMT_YUV420P,
-                                             width, height, PIX_FMT_YUV420P,
+    SwsContext *swsContext = sws_getContext( width, height, AV_PIX_FMT_YUV420P,
+                                             width, height, AV_PIX_FMT_YUV420P,
                                              SWS_FAST_BILINEAR, 0, 0, 0 );
     sws_scale( swsContext, sourceData, sourceLineSize, 0,
                height, destData, destLineSize );

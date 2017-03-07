@@ -76,8 +76,8 @@ void XImagePainter::paint( bool ) throw (Error)
       boost::shared_array< unsigned char > array
         ( new unsigned char[ m_window->width() * m_window->height() * 4 ] );
       SwsContext *swsContext =
-        sws_getContext( frame->width(), frame->height(), PIX_FMT_RGB24,
-                        m_window->width(), m_window->height(), PIX_FMT_BGRA,
+        sws_getContext( frame->width(), frame->height(), AV_PIX_FMT_RGB24,
+                        m_window->width(), m_window->height(), AV_PIX_FMT_BGRA,
                         SWS_POINT, 0, 0, 0 );
       uint8_t *sourceData[4];
       int sourceLineSize[4];
