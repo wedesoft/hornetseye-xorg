@@ -19,4 +19,4 @@ DESCRIPTION = %q{This Ruby extension provides graphical output under X.Org.}
 LICENSE = 'GPL-3+'
 AUTHOR = %q{Jan Wedekind}
 EMAIL = %q{jan@wedesoft.de}
-HOMEPAGE = %q{http://wedesoft.github.com/hornetseye-xorg/}
+HOMEPAGE = %q{http://wedesoft.github.io/hornetseye-xorg/}
